@@ -10,63 +10,65 @@
   $cpf = $_POST["fidCPF"];
   $estado_civil = $_POST["fidEstadoCivil"];
   $email = $_POST["fidEmail"];
-  $senha = $_POST["fldSenha"];
+  $senha = $_POST["fidSenha"];
 
-  $conexao_bd = mysql_connect("localhost","root");
-  $bd_conectado = ture;
+  $conexao_bd = mysqli_connect("localhost","root","12345","teste");
+  $bd_conectado = true;
 
-if(!$conexao_bd) {
+  if(!$conexao_bd) {
     $bd_conectado = false;
-    echo"<h2>Não foi possível conectar ao banco de dados do site</h2>";
-    echo mysql_error ();
-}
+    echo "<h2>Não foi possível conectar ao banco de dados do site</h2>";
+    error_reporting(E_ALL); 
+    ini_set('display_errors', 1);
+  }
 
-if($bd_conectado) {
-    mysql_select_db('projeto_imobiliaria', $conexao_bd);
+  if($bd_conectado) {
+    mysqli_select_db($conexao_bd, 'teste');
 
-    $comando_sql = "INSERT INTO clinete(Nome_Cliente, Endereco, Numero, Bairro, Cidade, Estado, CEP, Telefone, CPF, Estado_Civil, Email, Senha_Acesso) VALUE('$nome','$endereco','$numero','$bairro','$cidade','$estado','$cep','$telefone','$cpf','$estado_civil','$email','$senha')";
+    $comando_sql = "INSERT INTO teste.cliente(Nome, Endereco, Numero, Bairro, Cidade, Estado, CEP, Telefone, CPF, Estado_Civil, Email, Senha_Acesso) VALUE('$nome','$endereco','$numero','$bairro','$cidade','$estado','$cep','$telefone','$cpf','$estado_civil','$email','$senha')";
 
-    $registro_novo = mysql_query($comando_sql);
+    $registro_novo = mysqli_query($conexao_bd,$comando_sql);
 
     if($registro_novo != 0) {
-        echo"<div align='center'>";
-        echo"<table width=759 borber=0>";
-        echo"<tr>";
-        echo"<td bgcolor='#FF9900'>";
-        echo"<div align='center'>";
-        echo"<font face=Verdana size=3><b>Confirmação de Cadastro</b>";
-        echo"</div>";
-        echo"</td>";
-        echo"</tr>";
-        echo"<tr>";
-        echo"<td>&nbsp;</td>";
-        echo"</tr>";
-        echo"<tr>";
-        echo"<td>";
-        echo"<div align='center'>";
-        echo"<font face=Arial size=3><i>Usuário cadastrado com sucesso !</b>";
-        echo"</div>";
-        echo"</td>";
-        echo"</tr>";
-        echo"</table>";
-        echo"</div>";
-        echo"<p>&nbsp;</p>";
-        echo"<br><br>";
-        echo"Nome: $nome<br>";
-        echo"Endereço: $endereco, $numero<br>";
-        echo"Bairro: $bairro<br>";
-        echo"Cidade: $cidade<br>";
-        echo"Estado: $estado<br>";
-        echo"CEP: $cep<br>";
-        echo"Tel. fixo: $telefone<br>";
-        echo"CPF: $cpf<br>";
-        echo"Email: $email<br>";
+?>
+      <div align='center'>
+        <table width='759' border='0'>
+          <tr>
+            <td bgcolor='#FF9900'>
+              <div align='center'>
+                <font face='Verdana' size='3'><b>Confirmação de Cadastro</b>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>
+              <div align='center'>
+                <font face='Arial' size='3'><i>Usuário cadastrado com sucesso !</i></b>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p>&nbsp;</p>
+      <br><br>
+      Nome: <?php echo $nome ?><br>
+      Endereço: <?php echo $endereco ?>, <?php echo $numero ?><br>
+      Bairro: <?php echo $bairro ?><br>
+      Cidade: <?php echo $cidade ?><br>
+      Estado: <?php echo $estado ?><br>
+      CEP: <?php echo $cep ?><br>
+      Tel. fixo: <?php echo $telefone ?><br>
+      CPF: <?php echo $cpf ?><br>
+      Email: <?php echo $email ?><br>
+      Senha: <?php echo $senha ?><br>
+<?php
+    } else {
+      echo "<h2><center>Erro no cadastro do usuário !</center></h2>";
+      echo mysqli_error($conexao_bd);
     }
-    else{
-        echo"<h2><center>Erro no cadastro do usuário !</center></h2>";
-        echo"<br><br>";
-        echo mysql_error();
-    }
-}
-mysql_close($conexao_bd);
+  }
+  mysqli_close($conexao_bd);
 ?>
